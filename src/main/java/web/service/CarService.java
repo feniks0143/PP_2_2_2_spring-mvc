@@ -6,6 +6,7 @@ import web.model.Car;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CarService {
@@ -17,22 +18,20 @@ public class CarService {
         list.add(new Car("BMW", "4A-GE", 5));
         list.add(new Car("Ford", "Type F", 2));
         list.add(new Car("Honda", "1GZ-FE", 7));
-        list.add(new Car("Kia", "1JZ-GTE è 2JZ-GTE", 11));
+        list.add(new Car("Kia", "1JZ-GTE ï¿½ 2JZ-GTE", 11));
     }
 
     public List<Car> getCar() {
-        return  list;
+        return list;
     }
 
     public List<Car> getCarByNumber(int count) {
-        List<Car> cars = new ArrayList<>();
-        if(count <= list.size()) {
-            for (int i = 0; i < count; i++) {
-                cars.add(list.get(i));
-            }
-                return cars;
-        }
-            return getCar();
+        if (count <= 0 || count >= list.size()) {
+            return list;
         }
 
+        return list.stream()
+                .limit(count)
+                .collect(Collectors.toList());
+    }
 }
